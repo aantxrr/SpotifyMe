@@ -58,19 +58,23 @@ def download():
     try:
         progress_store[download_id] = 0.0
         
+       # Określamy dokładną ścieżkę do folderu z aplikacją
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        cookies_path = os.path.join(BASE_DIR, 'cookies.txt')
+        ffmpeg_path = os.path.join(BASE_DIR, 'ffmpeg')
+
         ydl_opts = {
             'format': 'bestaudio/best',
             'outtmpl': os.path.join(SPOTIFYME_DIR, '%(title)s.%(ext)s'),
             'progress_hooks': [make_hook(download_id)],
             'nocheckcertificate': True,
-            'cookiefile': 'cookies.txt',
-            'ffmpeg_location': '.',  # <-- TA LINIIKA MÓWI: "FFmpeg jest w tym samym folderze!"
+            'cookiefile': cookies_path,        # <-- PEŁNA ŚCIEŻKA DO COOKIES
+            'ffmpeg_location': ffmpeg_path,    # <-- PEŁNA ŚCIEŻKA DO FFMPEG
             'postprocessors': [{
                 'key': 'FFmpegExtractAudio',
                 'preferredcodec': 'mp3',
                 'preferredquality': '192',
             }],
-        }
         }
         
         with YoutubeDL(ydl_opts) as ydl:
