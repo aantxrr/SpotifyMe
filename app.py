@@ -58,9 +58,7 @@ def download():
     try:
         progress_store[download_id] = 0.0
         
-     # Określamy dokładną ścieżkę do folderu z aplikacją
-        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-        cookies_path = os.path.join(BASE_DIR, 'cookies.txt')
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
         ffmpeg_path = os.path.join(BASE_DIR, 'ffmpeg')
 
         ydl_opts = {
@@ -69,9 +67,10 @@ def download():
             'progress_hooks': [make_hook(download_id)],
             'nocheckcertificate': True,
             'ffmpeg_location': ffmpeg_path,
+            'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
             'extractor_args': {
                 'youtube': {
-                    'player_client': ['tv_embedded', 'android'],
+                    'player_client': ['web', 'android'],
                 }
             },
             'postprocessors': [{
