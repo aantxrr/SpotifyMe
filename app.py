@@ -64,6 +64,7 @@ def download():
             'outtmpl': os.path.join(SPOTIFYME_DIR, '%(title)s.mp3'),
             'progress_hooks': [make_hook(download_id)],
             'nocheckcertificate': True,
+            'cookiefile': 'cookies.txt',
         }
         
         with YoutubeDL(ydl_opts) as ydl:
