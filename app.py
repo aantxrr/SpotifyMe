@@ -63,13 +63,22 @@ def download():
         cookies_path = os.path.join(BASE_DIR, 'cookies.txt')
         ffmpeg_path = os.path.join(BASE_DIR, 'ffmpeg')
 
+       BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        ffmpeg_path = os.path.join(BASE_DIR, 'ffmpeg')
+
         ydl_opts = {
             'format': 'bestaudio/best',
             'outtmpl': os.path.join(SPOTIFYME_DIR, '%(title)s.%(ext)s'),
             'progress_hooks': [make_hook(download_id)],
             'nocheckcertificate': True,
-            'cookiefile': cookies_path,        # <-- PEŁNA ŚCIEŻKA DO COOKIES
-            'ffmpeg_location': ffmpeg_path,    # <-- PEŁNA ŚCIEŻKA DO FFMPEG
+            'ffmpeg_location': ffmpeg_path,
+            # Podszywamy się pod klienta mobilnego i przeglądarkę Safari na iOS (bardzo rzadko blokowane przez YT)
+            'http_headers': {
+                'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                'Accept-Language': 'pl-pl,pl;q=0.9,en-us;q=0.8,en;q=0.7',
+                'Sec-Fetch-Mode': 'navigate',
+            },
             'postprocessors': [{
                 'key': 'FFmpegExtractAudio',
                 'preferredcodec': 'mp3',
