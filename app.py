@@ -81,32 +81,6 @@ def download():
                 'preferredquality': '192',
             }],
         }
-
-       BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-        ffmpeg_path = os.path.join(BASE_DIR, 'ffmpeg')
-
-        ydl_opts = {
-            # Pobieramy wyłącznie strumień audio za pomocą oficjalnych klientów iOS/Web_creator
-            'format': 'bestaudio/best',
-            'outtmpl': os.path.join(SPOTIFYME_DIR, '%(title)s.%(ext)s'),
-            'progress_hooks': [make_hook(download_id)],
-            'nocheckcertificate': True,
-            'ffmpeg_location': ffmpeg_path,
-            
-            # Kluczowa zmiana: Zmuszamy yt-dlp do korzystania z bezpiecznych klientów,
-            # które rzadko wymagają weryfikacji botowej i nie potrzebują ciasteczek:
-            'extractor_args': {
-                'youtube': {
-                    'player_client': ['ios', 'web_creator'],
-                }
-            },
-            
-            'postprocessors': [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'mp3',
-                'preferredquality': '192',
-            }],
-        }
         
         with YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=True)
