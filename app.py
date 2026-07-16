@@ -60,16 +60,17 @@ def download():
         
         ydl_opts = {
             'format': 'bestaudio/best',
-            'outtmpl': os.path.join(SPOTIFYME_DIR, '%(title)s.%(ext)s'),  # zapisuje w oryginalnym formacie (np. m4a/webm)
+            'outtmpl': os.path.join(SPOTIFYME_DIR, '%(title)s.%(ext)s'),
             'progress_hooks': [make_hook(download_id)],
             'nocheckcertificate': True,
             'cookiefile': 'cookies.txt',
-            # Ta sekcja poniżej automatycznie przerobi pobrane audio na czyste MP3:
+            'ffmpeg_location': '.',  # <-- TA LINIIKA MÓWI: "FFmpeg jest w tym samym folderze!"
             'postprocessors': [{
                 'key': 'FFmpegExtractAudio',
                 'preferredcodec': 'mp3',
                 'preferredquality': '192',
             }],
+        }
         }
         
         with YoutubeDL(ydl_opts) as ydl:
