@@ -58,9 +58,7 @@ def download():
     try:
         progress_store[download_id] = 0.0
         
-      # Określamy dokładną ścieżkę do folderu z aplikacją
-        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-        cookies_path = os.path.join(BASE_DIR, 'cookies.txt')
+      BASE_DIR = os.path.dirname(os.path.abspath(__file__))
         ffmpeg_path = os.path.join(BASE_DIR, 'ffmpeg')
 
         ydl_opts = {
@@ -68,13 +66,15 @@ def download():
             'outtmpl': os.path.join(SPOTIFYME_DIR, '%(title)s.%(ext)s'),
             'progress_hooks': [make_hook(download_id)],
             'nocheckcertificate': True,
-            'cookiefile': cookies_path,
             'ffmpeg_location': ffmpeg_path,
-            'http_headers': {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-                'Accept-Language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7',
+            
+            # Najważniejsze: Te dwa bezpieczne klienty YouTube nie wymagają JS ani ciasteczek i omijają boty:
+            'extractor_args': {
+                'youtube': {
+                    'player_client': ['tv_embedded', 'android'],
+                }
             },
+            
             'postprocessors': [{
                 'key': 'FFmpegExtractAudio',
                 'preferredcodec': 'mp3',
